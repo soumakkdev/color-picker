@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
-import { clamp } from '../lib'
+import { clamp, baseColorState } from './utils'
 
-export default function Picker() {
+export default function Hue() {
 	const canvasRef = useRef<HTMLCanvasElement>(null)
 	const handleRef = useRef<HTMLDivElement>(null)
 
@@ -14,22 +14,16 @@ export default function Picker() {
 		if (ctx && canvas) {
 			const { width, height } = canvas
 
-			// solid color
-			ctx.fillStyle = '#2797ff'
-			ctx.fillRect(0, 0, width, height)
-
-			// white horizontal gradient
-			const gradientH = ctx.createLinearGradient(0, 0, width, 0)
-			gradientH.addColorStop(0, 'rgba(255, 255, 255, 1)')
-			gradientH.addColorStop(1, 'rgba(255, 255, 255, 0)')
-			ctx.fillStyle = gradientH
-			ctx.fillRect(0, 0, width, height)
-
-			// black vertical gradient
-			const gradientV = ctx.createLinearGradient(0, 0, 0, height)
-			gradientV.addColorStop(0, 'rgba(0, 0, 0, 0)')
-			gradientV.addColorStop(1, 'rgba(0, 0, 0, 1)')
-			ctx.fillStyle = gradientV
+			// rainbow gradient
+			const gradient = ctx.createLinearGradient(0, 0, width, 0)
+			gradient.addColorStop(0, 'rgb(255, 0, 0)') //red
+			gradient.addColorStop(1 / 6, 'rgb(255, 255, 0)') //yellow
+			gradient.addColorStop(2 / 6, 'rgb(0, 255, 0)') //green
+			gradient.addColorStop(3 / 6, 'rgb(0, 255, 255)') //cyan
+			gradient.addColorStop(4 / 6, 'rgb(0, 0, 255)') //blue
+			gradient.addColorStop(5 / 6, 'rgb(255, 0, 255)') //pink
+			gradient.addColorStop(1, 'rgb(255, 0, 0)') //red
+			ctx.fillStyle = gradient
 			ctx.fillRect(0, 0, width, height)
 		}
 	}, [])
@@ -45,13 +39,14 @@ export default function Picker() {
 			const rect = canvas.getBoundingClientRect()
 
 			let x = clamp(e.clientX - rect.left, 0, canvas.width)
-			let y = clamp(e.clientY - rect.top, 0, canvas.height)
+			let y = canvas.height / 2 // y pos will be in the center of canvas
 
 			handle.style.left = `${x - handle.offsetWidth / 2}px`
-			handle.style.top = `${y - handle.offsetHeight / 2}px`
 
 			const imgData = ctx.getImageData(x, y, 1, 1)
 			const [r, g, b] = imgData.data
+
+			baseColorState.color = { r, g, b }
 
 			// console.log(x, y, r, g, b)
 		}
@@ -79,8 +74,8 @@ export default function Picker() {
 	}, [])
 
 	return (
-		<div id="picker">
-			<canvas ref={canvasRef} height={500} width={500}></canvas>
+		<div id="hue">
+			<canvas ref={canvasRef} height={10} width={500}></canvas>
 			<div id="handle" ref={handleRef}></div>
 		</div>
 	)
