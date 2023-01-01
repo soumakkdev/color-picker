@@ -9,14 +9,20 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"jotai": "^1.12.1",
 		"react": "^18.2.0",
+		"react-color-palette": "^6.2.0",
 		"react-dom": "^18.2.0",
 		"valtio": "^1.8.0"
 	},
 	"devDependencies": {
+		"@tailwindcss/forms": "^0.5.3",
 		"@types/react": "^18.0.26",
 		"@types/react-dom": "^18.0.9",
 		"@vitejs/plugin-react-swc": "^3.0.0",
+		"autoprefixer": "^10.4.13",
+		"postcss": "^8.4.20",
+		"tailwindcss": "^3.2.4",
 		"typescript": "^4.9.3",
 		"vite": "^4.0.0"
 	}
