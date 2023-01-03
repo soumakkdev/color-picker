@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-	@apply p-5;
+	@apply p-5 font-body;
 }
 
 .rcp-saturation {
